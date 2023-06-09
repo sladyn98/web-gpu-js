@@ -64,7 +64,16 @@ async function initWebGPU() {
     new Float32Array(verticesBuffer.getMappedRange()).set(verticesData);
     verticesBuffer.unmap();
 
-    const texture = await helpers.createTextureFromImage(device, './wallpaper.jpeg', GPUTextureUsage.TEXTURE_BINDING);
+    // const texture = await helpers.createTextureFromImage(device, './wallpaper.jpeg', GPUTextureUsage.TEXTURE_BINDING);
+    
+    document.querySelector('#imageUpload').addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+            return;
+        }
+    
+    const texture = await helpers.createTextureFromImage(device, URL.createObjectURL(file), GPUTextureUsage.TEXTURE_BINDING);
+    
     const sampler = device.createSampler({
         magFilter: 'linear',
         minFilter: 'linear',
@@ -163,6 +172,6 @@ async function initWebGPU() {
     }
 
     render();
-}
+});}
 
 initWebGPU();
